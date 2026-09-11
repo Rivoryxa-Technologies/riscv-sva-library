@@ -40,8 +40,10 @@ properties can be reused as targets in a formal flow.
 ## Notes
 
 The CDC checker is a lightweight structural aid, not a replacement for a
-dedicated CDC signoff tool. Want help wiring these into a UVM environment or a
-formal proof? Reach out.
+dedicated CDC signoff tool.
 
----
-Maintained by [Rivoryxa Technologies](https://www.linkedin.com/company/rivoryxa-technologies/).
+## What Rivoryxa delivers with this
+
+These checkers are the public, generic end of our assertion work. On client cores we write design-specific SVA and immediate assertions for control FSMs, debug and single-step logic, interrupt delivery, CSR access, and bus handshakes (OBI on the CORE-V cores), and we prove them with SymbiYosys rather than only simulating them. Each assertion ships paired with a reachability cover, and each proof ships with its log.
+
+See the [Rivoryxa profile](https://github.com/Rivoryxa-Technologies) for our full service list, or reach us on [LinkedIn](https://www.linkedin.com/company/rivoryxa-technologies/).
