@@ -7,6 +7,8 @@ testbench) to catch protocol and structural bugs early, without rewriting the
 same properties for every block. Each one works in simulation and can be handed
 to a formal tool for exhaustive proof.
 
+> **Verified:** lints clean under Verilator (`verilator --lint-only -sv`).
+
 ## Checkers
 
 | Module | What it checks |
