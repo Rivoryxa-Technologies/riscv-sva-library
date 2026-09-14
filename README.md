@@ -62,3 +62,5 @@ ack property is `ack |-> req`, not an outstanding-request scoreboard. The FIFO
 checker forbids requests while full/empty; do not bind it unchanged to an
 interface whose contract permits and rejects such requests. The CDC checker
 checks sampled pipeline behavior, not physical synchronizer implementation.
+
+The raw output is in `evidence/audit-2026-09-15.log`.
