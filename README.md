@@ -4,8 +4,8 @@ Reusable SystemVerilog Assertion (SVA) checkers for RTL and SoC verification.
 
 These are checker modules you `bind` into a design (or instantiate in a
 testbench) to catch protocol and structural bugs early, without rewriting the
-same properties for every block. Each one works in simulation and can be handed
-to a formal tool for exhaustive proof.
+same properties for every block. This repository currently demonstrates lint only. Simulation and formal use
+require a compatible frontend, a DUT, and tests that show each checker can fail.
 
 > **Verified:** lints clean under Verilator (`verilator --lint-only -sv`).
 
@@ -34,8 +34,10 @@ bind my_fifo fifo_safety_check u_fifo_chk (
 );
 ```
 
-The assertions fire during simulation on any violation, and the same
-properties can be reused as targets in a formal flow.
+Enable assertion checking in a compatible simulator and validate each checker
+with passing and deliberately violating stimulus before relying on it. Plain
+Yosys does not support all temporal SVA syntax used here. No executable
+simulation or formal regression is provided in this repository.
 
 ## Notes
 
@@ -47,3 +49,16 @@ dedicated CDC signoff tool.
 These checkers are the public, generic end of our assertion work. On client cores we write design specific SVA and immediate assertions for control FSMs, debug and single step logic, interrupt delivery, CSR access, and bus handshakes, and we prove them with SymbiYosys rather than only simulating them. Each assertion ships paired with a reachability cover, and each proof ships with its log.
 
 See the [Rivoryxa profile](https://github.com/Rivoryxa-Technologies) for our full service list, or reach us on [LinkedIn](https://www.linkedin.com/company/rivoryxa-technologies/).
+
+## Rechecked scope, 15 September 2026
+
+`verilator --lint-only --assert -sv -Wno-MULTITOP rtl_assertions.sv` exits zero
+with Verilator 5.050 on macOS arm64. `-Wno-MULTITOP` permits the intentional
+collection of independent checker modules. This is lint, not proof that any
+assertion detects a defect. No runtime or unbounded proof is claimed.
+
+The request/ack checker assumes `req` remains high until `ack`: its no-spurious
+ack property is `ack |-> req`, not an outstanding-request scoreboard. The FIFO
+checker forbids requests while full/empty; do not bind it unchanged to an
+interface whose contract permits and rejects such requests. The CDC checker
+checks sampled pipeline behavior, not physical synchronizer implementation.
